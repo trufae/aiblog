@@ -1,0 +1,138 @@
+/* Typography and Base Styles */
+body {
+    background-color: #FFFFFF; /* White background */
+    color: #333333;           /* Dark grey text */
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    padding: 20px;
+    max-width: 800px;
+    margin: auto;
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+    color: #0054d3; /* Deep professional orange */
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+    font-weight: bold;
+}
+
+/* Paragraphs */
+p {
+    margin-bottom: 1em;
+    text-align: justify !important;
+}
+
+/* Links */
+a {
+    color: #5DADE2;            /* Light blue for links */
+    text-decoration: none;
+    border-bottom: 1px dashed #5DADE2;
+}
+
+a:hover {
+    color: #3d7de2;            /* Deep orange on hover */
+    border-bottom: 1px solid #D35400;
+}
+
+/* Lists */
+ul, ol {
+    margin: 1em 0;
+    padding-left: 1.5em;
+}
+
+li {
+    margin-bottom: 0.5em;
+}
+
+/* Blockquotes */
+blockquote {
+    border-left: 4px solid #5DADE2; /* Light blue border */
+    padding-left: 1em;
+    background-color: #F0F8FF; /* Subtle light blue (AliceBlue) background */
+    color: #333333;
+    margin: 1em 0;
+    font-style: italic;
+}
+
+/* Code Blocks and Inline Code */
+pre {
+    background-color: #2d2d2d; /* Dark background for code blocks */
+    color: #FFFFFF;
+    border-radius: 5px;
+    padding: 1em;
+    white-space: pre;
+    overflow-x: auto;
+}
+
+code {
+    background-color: #2d2d2d;
+    padding: 0.2em 0.4em;
+    color: #FFFFFF;
+    white-space: pre;
+    border-radius: 3px;
+    font-family: Consolas, "Liberation Mono", Courier, monospace;
+    font-weight: bold;
+}
+
+/* Tables */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1em;
+}
+
+th, td {
+    border: 1px solid #ddd; /* Light grey border */
+    padding: 0.5em;
+    text-align: left;
+}
+
+th {
+    background-color: #f7f7f7; /* Light grey background */
+    color: #333333;
+}
+
+tr:nth-child(even) {
+    background-color: #FFFFFF; /* White for even rows */
+}
+
+/* Images */
+img {
+    max-width: 100%;
+}
+
+/* Horizontal Rule */
+hr {
+    border: 0;
+    border-top: 1px solid #ddd; /* Light grey line */
+    margin: 2em 0;
+}
+
+/* Syntax Highlighting (Pygments) */
+code span.al { color: #D35400; font-weight: bold; } /* Alert */
+code span.an { color: #5DADE2; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #FFFFFF; } /* Attribute */
+code span.bn { color: #D35400; } /* BaseN */
+code span.cf { color: #5DADE2; font-weight: bold; } /* ControlFlow */
+code span.co { color: #5DADE2; font-style: italic; } /* Comment */
+code span.dv { color: #D35400; } /* DecVal */
+code span.er { color: #FF0000; font-weight: bold; } /* Error */
+code span.fu { color: #D35400; } /* Function */
+code span.kw { color: #D35400; font-weight: bold; } /* Keyword */
+code span.st { color: #5DADE2; } /* String */
+code span.va { color: #D35400; } /* Variable */
+
+/* Responsive Images */
+.image-container {
+    position: relative;
+    width: 100%; /* Make it responsive */
+    max-width: 800px; /* Optional: limit max width */
+    margin: 0 auto;
+}
+
+.image-container img {
+    width: 100%;
+    height: auto;
+}
+
