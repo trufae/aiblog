@@ -9,3 +9,7 @@
 * [ToxicPanda](ToxicPanda_Report.html)
 * [BadPack](BadPack_Report.html)
 * [Joker](Joker_Report.html)
+
+## Malicious Techniques
+
+* [SplashScreen](SplashScreen_Technique.md)
