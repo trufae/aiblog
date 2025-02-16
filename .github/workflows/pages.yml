@@ -30,6 +30,8 @@ jobs:
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v5
+      - name: Install pandoc
+        run: sudo apt update && sudo apt install pandoc
       - name: Build with pandoc
         run: make
       - name: Upload artifact

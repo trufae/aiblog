@@ -9,7 +9,8 @@ all:
 	sh gen.sh ToxicPanda_Report
 	sh gen.sh BadPack_Report
 	sh gen.sh Joker_Report
+
 www-init:
 	rm -rf www
 	mkdir -p www
-	cp index-css www
+	cp -f index.css www
