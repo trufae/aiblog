@@ -95,6 +95,123 @@ JNIEXPORT jstring JNICALL Java_com_badpack_utils_Decryptor_nativeDecrypt(JNIEnv 
 
 ---
 
+## How BadPack Exploits ZIP Headers
+
+BadPack is not a separate “binary” malware per se but rather a technique used by several Android malware families (e.g. TeaBot/Anatsa, BianLian, Cerberus) to “garble” the APK package. Attackers deliberately alter ZIP header fields in the APK (which is just a ZIP archive) so that standard static analysis tools (like Apktool, Jadx, or even the JAR tool) fail to extract or parse the critical **AndroidManifest.xml** file. Despite these “corruptions,” the Android runtime itself remains relatively lenient—it only relies on the central directory headers when installing the app. This means that the malware can run normally on devices even though analysis tools encounter errors.
+
+## ZIP File Structure Refresher
+
+An APK file follows the ZIP file format and contains two types of headers:
+
+1. **Local File Headers:**  
+   - Appear immediately before each file’s compressed data.
+   - Begin with a signature (usually `50 4B 03 04` corresponding to ASCII “PK”).
+   - Contain fields such as:
+     - **Compression Method (2 bytes):** For example, `0` (STORE) or `8` (DEFLATE).  
+     - **Compressed Size (4 bytes)**
+     - **Uncompressed Size (4 bytes)**
+     - **Filename Length** and **Extra Field Length**
+
+2. **Central Directory File Headers:**  
+   - Located near the end of the archive.
+   - Also hold metadata (including the compression method, sizes, etc.) but at different offsets.
+   - Critically, Android’s package installer reads from these headers rather than the local file headers.
+
+For a valid ZIP (and thus APK), the values in the local headers and the central directory must be consistent.
+
+Malware authors use one or more of the following techniques to “corrupt” the ZIP headers in an APK:
+
+1. **Method 1 – Invalid Compressed Size with STORE Method:**  
+   The local file header may claim a compression method of STORE (i.e. no compression) but provide an incorrect (mismatched) compressed size. Analysis tools rely on the local header for decompression and fail because the expected byte count is wrong.  
+   - *Example:* Local header shows compression method 0 with a compressed size of 14,417 bytes, while the correct size (from the central directory) is 41,192 bytes.
+
+2. **Method 2 – Incorrect Compression Method Value:**  
+   The local header might be altered to use a nonstandard or unexpected compression method value (e.g. a random integer instead of `8` for DEFLATE), even though the file data is actually stored (STORE). Meanwhile, the central directory still correctly indicates STORE.  
+   - *Example:* Local header might show compression method 27941 instead of 0, with mismatched sizes.
+
+3. **Method 3 – Mismatch Between Local and Central Directory Headers:**  
+   The local header might specify a compression method (or size) that does not match the central directory header. Since Android only uses the central directory header during installation, the APK runs correctly on devices. However, static analysis tools that check both headers encounter errors and abort processing.
+
+This deliberate mismatch is key to the BadPack technique. Tools like Apktool, Jadx, and even the standard `unzip` utility will report errors such as “Invalid CEN header” or “unsupported compression method” when faced with such corrupted header data.
+
+## Low-Level Details with Code Examples and Hexdumps
+
+### Sample Hexdump
+
+Below is an illustrative hexdump of a local file header from a benign APK file versus one manipulated by BadPack.
+
+**Normal Local File Header (Hexdump):**
+```
+50 4B 03 04 14 00 00 00 08 00 B7 AC CE 34 00 00 00 00 00 00 00 00 08 00 1C 00 66 69 6C 65 31
+```
+- **Breakdown:**
+  - `50 4B 03 04` → Signature “PK”
+  - `08 00` at offset 0x08 → Compression method 8 (DEFLATE)
+  - Compressed size and uncompressed size fields match (here represented by `00 00 00 00` placeholders, followed by correct size values).
+
+**BadPack Manipulated Header Example:**
+```
+50 4B 03 04 14 00 00 00 ED 7B 12 34 00 00 00 00 00 00 00 00 ED 7B 12 34 1C 00 66 69 6C 65 31
+```
+- **Key differences:**
+  - At offset 0x08, the byte sequence `ED 7B` (interpreted as an unexpected value rather than `08 00`) may indicate an altered compression method.
+  - The compressed size fields (here shown as `ED 7B 12 34` in little-endian) no longer match the actual payload size or the values stored in the central directory.
+
+These alterations disrupt static analysis because tools attempt to decompress data using the wrong method or incorrect size.
+
+### Python Code Example to Parse a Local File Header
+
+The following Python snippet demonstrates how you might read and parse a local file header from a ZIP file. (In a real-world scenario, you could extend this to compare local and central directory headers and even “fix” them.)
+
+```python
+import struct
+
+def read_local_file_header(f, offset):
+    # Local file header format:
+    # Signature (4 bytes), Version (2 bytes), Flags (2 bytes),
+    # Compression Method (2 bytes), Mod Time (2 bytes), Mod Date (2 bytes),
+    # CRC32 (4 bytes), Compressed Size (4 bytes), Uncompressed Size (4 bytes),
+    # File Name Length (2 bytes), Extra Field Length (2 bytes)
+    header_format = "<4s2B4HL2L2H"
+    header_size = struct.calcsize(header_format)
+    f.seek(offset)
+    header_data = f.read(header_size)
+    (signature, ver1, ver2, flags, comp_method, mod_time, mod_date,
+     crc32, comp_size, uncomp_size, fname_len, extra_len) = struct.unpack(header_format, header_data)
+    
+    if signature != b'PK\x03\x04':
+        raise ValueError("Invalid local file header signature")
+    
+    return {
+        "compression_method": comp_method,
+        "compressed_size": comp_size,
+        "uncompressed_size": uncomp_size,
+        "file_name_length": fname_len,
+        "extra_field_length": extra_len,
+        "header_size": header_size
+    }
+
+# Example usage:
+with open("sample.apk", "rb") as f:
+    header = read_local_file_header(f, 0)
+    print("Local File Header Info:", header)
+```
+
+In a BadPack scenario, if you compare the `comp_method` or `comp_size` returned by this function to the corresponding values from the central directory header, you might detect a discrepancy. Analysts can then “repair” the header by overriding the bad values with the correct ones from the central directory before feeding the file into decompilation tools.
+
+## Why This Technique Works
+
+- **Static Analysis vs. Runtime Behavior:**  
+  Static analysis tools enforce strict adherence to ZIP format specifications by checking both local and central directory headers. When they detect mismatches, they abort processing. In contrast, Android’s runtime installer relies only on the central directory header, so despite the malformed local headers, the app installs and runs normally.
+
+- **Evasion:**  
+  By preventing analysts from easily extracting and viewing the AndroidManifest.xml, malware authors can hide permissions, intent filters, and other key configuration details that would normally reveal malicious behavior.
+
+- **Tool Limitations:**  
+  Even common utilities like 7-Zip, Apktool, Jadx, and even Apksigner may fail or report errors when encountering these malformed headers. However, specialized tools (such as the open-source APK Inspector) can sometimes “repair” the headers and allow analysis.
+
+---
+
 ## 5. IOC Indicators and YARA Rules
 
 ### A. IOC Indicators
@@ -133,6 +250,14 @@ rule BadPack_Android_Malware
 - **Use runtime application self-protection (RASP).**
 - **Regularly update Android security patches.**
 - **Deploy network-based monitoring solutions.**
+
+---
+
+## Conclusion
+
+BadPack represents a clever anti-analysis tactic: it exploits the inherent flexibility of the Android runtime’s ZIP extraction by corrupting the local file headers, thereby breaking static analysis tools that depend on strict ZIP format validation. The result is a stealthy malware distribution method that lets malicious APKs (used by families like TeaBot/Anatsa) run on devices while evading detection during offline analysis.
+
+This technique underscores the need for evolving analysis tools that can dynamically adjust to these header mismatches, or for manual intervention (via header “fixing” scripts) to properly inspect such malware.
 
 ---
 
