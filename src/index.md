@@ -12,4 +12,4 @@
 
 ## Malicious Techniques
 
-* [SplashScreen](SplashScreen_Technique.md)
+* [SplashScreen](SplashScreen_Technique.html)
