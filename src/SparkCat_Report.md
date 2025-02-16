@@ -73,25 +73,6 @@ Additionally, SparkCat's filtering of OCR results involves multiple processing s
 - **Processor Modules:** Classes such as `KeywordsProcessor`, `DictProcessor`, and `WordNumProcessor` filter recognized text based on parameters like minimum/maximum letter count and dictionary matches. These thresholds are configurable via JSON objects received from the C2.
    [oai_citation_attribution:6‡securelist.com](https://securelist.com/sparkcat-stealer-in-app-store-and-google-play/115385/)
 
-
-### OCR-Based Data Exfiltration
-
-At its core, SparkCat exploits the Google ML Kit's OCR library to process images stored in the device’s gallery:
-
-- **Dynamic OCR Model Loading:** Based on the device’s language settings, SparkCat downloads OCR models trained to recognize scripts in Latin, Chinese, Korean, and Japanese. This allows the malware to accurately extract recovery phrases across multiple languages.  
-- **Keyword Filtering:** Once text is extracted, it is filtered against a list of keywords (e.g., “Mnemonic,” “助记词,” “ニーモニック”) that are dynamically fetched from the C2 server. Only images matching these criteria are exfiltrated.
-
-### Communication and Encryption
-
-The exfiltrated data is sent to attacker-controlled servers using a multi-layered encryption process:
-- **Dual Communication Channels:**  
-  - **HTTP-Based Channel:** SparkCat uses POST requests to communicate with an HTTP endpoint. Data is encrypted with AES-256 in CBC mode using hardcoded keys, and server responses are decrypted with AES-128 in CBC mode.
-  - **Custom Rust-Based Protocol:** A native Rust library—rare in mobile malware—is employed to handle a secondary channel. This library obscures its functions through non-standard calling conventions and minimal symbol information, making static analysis challenging. Before sending data, the library:
-    - Generates a 32-byte key for an AES-GCM-SIV cipher.
-    - Compresses data using ZSTD.
-    - Encrypts the compressed payload with the generated key.
-    - Sends the AES key (RSA-encrypted using a hardcoded public key) alongside the payload over TCP.
-
 ---
 
 ## Code Examples and Analysis
@@ -136,8 +117,6 @@ void processImage(Bitmap bitmap) {
 ---
 
 ## Detection and Reverse Engineering Considerations
-
-For reverse engineers, several low-level details are essential when analyzing SparkCat:
 
 For reverse engineers, several low-level details are essential when analyzing SparkCat:
 
