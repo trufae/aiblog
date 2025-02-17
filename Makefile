@@ -2,6 +2,7 @@ all:
 	$(MAKE) www-init
 	sh gen.sh index
 	sh gen.sh SplashScreen_Technique
+	sh gen.sh BadPack_Technique
 	sh gen.sh android-malware-2025
 	sh gen.sh SparkCat_Report
 	sh gen.sh SpyNote_Report
