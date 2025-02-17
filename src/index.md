@@ -12,4 +12,5 @@
 
 ## Malicious Techniques
 
-* [SplashScreen](SplashScreen_Technique.html)
+* [Splash Screen](SplashScreen_Technique.html)
+* [Badpack Corrupted Zips](BadPack_Technique.html)
