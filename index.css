@@ -2,9 +2,9 @@
 body {
     background-color: #FFFFFF; /* White background */
     color: #333333;           /* Dark grey text */
-    font-family: "Georgia, Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-    line-height: 1.6;
-    font-size: 18px;
+    font-family: "Georgia", "Times New Roman", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.2em;
+    font-size: 1.2em;
     padding: 20px;
     max-width: 800px;
     margin: auto;
