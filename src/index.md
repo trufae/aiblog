@@ -1,8 +1,14 @@
 # The AI Blog
 
+## AI/LLM
+
+* [The think tag](think-tag.html)
+
+## Malware
+
 * [Status of Android Malware in 2025](android-malware-2025.html)
 
-## Modern Android malware
+### Modern Android malware
 
 * [SparkCat](SparkCat_Report.html)
 * [SpyNote](SpyNote_Report.html)
@@ -10,7 +16,7 @@
 * [BadPack](BadPack_Report.html)
 * [Joker](Joker_Report.html)
 
-## Malicious Techniques
+### Malicious Techniques
 
 * [Splash Screen](SplashScreen_Technique.html)
 * [Badpack Corrupted Zips](BadPack_Technique.html)
