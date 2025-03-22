@@ -42,69 +42,43 @@ This technique is useful for:
 
 Example Usage:
 
-```
-<think>Consider an alternative scenario where variable X changes. How would the outcome differ? Analyze both cases.</think>
-```
+> <think>Consider an alternative scenario where variable X changes. How would the outcome differ? Analyze both cases.</think>
 
 3. Self-Reflection and Verification
 
 Before finalizing an answer, prompting the model to verify its reasoning reduces errors and improves reliability.
 
-Example Usage:
-
-```
-<think>Before providing the final answer, check if all assumptions are valid and if there are any logical inconsistencies.</think>
-```
+> <think>Before providing the final answer, check if all assumptions are valid and if there are any logical inconsistencies.</think>
 
 4. Weighing Pros and Cons
 
 For decision-making tasks, asking the model to evaluate advantages and disadvantages enhances balanced outputs.
 
-Example Usage:
-
-```
-<think>List the pros and cons of both options before making a recommendation.</think>
-```
+> <think>List the pros and cons of both options before making a recommendation.</think>
 
 5. Decomposing Complex Queries
 
 When dealing with intricate questions, breaking them into smaller components can make the response clearer.
 
-Example Usage:
-
-```
-<think>Identify the key components of the question and address each separately before synthesizing a final response.</think>
-```
+> <think>Identify the key components of the question and address each separately before synthesizing a final response.</think>
 
 6. Logical Deduction and Inference
 
 Encouraging the model to infer conclusions based on given data improves analytical responses.
 
-Example Usage:
-
-```
-<think>Infer the most probable outcome based on the evidence provided.</think>
-```
+> <think>Infer the most probable outcome based on the evidence provided.</think>
 
 7. Fact-Checking and Consistency Verification
 
 To avoid hallucinations, instructing the model to fact-check improves response credibility.
 
-Example Usage:
-
-```
-<think>Verify all factual claims before answering. Ensure consistency with known information.</think>
-```
+> <think>Verify all factual claims before answering. Ensure consistency with known information.</think>
 
 8. Creative and Generative Thinking
 
 For brainstorming tasks, stimulating creativity can lead to richer ideas.
 
-Example Usage:
-
-```
-<think>Generate at least three unique solutions to this problem, considering different perspectives.</think>
-```
+> <think>Generate at least three unique solutions to this problem, considering different perspectives.</think>
 
 ## When to Use Each Technique
 
@@ -165,4 +139,4 @@ Model Output:
 
 ## Conclusion
 
-The <think> tag is a versatile tool that enhances structured reasoning, fact-checking, and creative problem-solving in AI models. By strategically incorporating it into system prompts, users can refine model outputs for various use cases, ensuring more reliable and insightful responses. Whether for technical debugging, ethical reasoning, or strategic planning, leveraging <think> effectively leads to better AI interactions.
+The `<think>` tag is a versatile tool that enhances structured reasoning, fact-checking, and creative problem-solving in AI models. By strategically incorporating it into system prompts, users can refine model outputs for various use cases, ensuring more reliable and insightful responses. Whether for technical debugging, ethical reasoning, or strategic planning, leveraging <think> effectively leads to better AI interactions.
