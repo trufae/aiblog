@@ -4,7 +4,7 @@ body {
     color: #333333;
     font-family: "Georgia", "Times New Roman", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.2em;
-    font-size: 0.8em;
+    font-size: 1em;
     padding: 20px;
     max-width: 800px;
     margin: auto;
@@ -12,7 +12,6 @@ body {
 h1 {
     font-size: 0.8em;
     font-weight: bold;
-    line-height: 1.2;
 }
 h2 {
     font-size: 32px;

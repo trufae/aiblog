@@ -2,11 +2,11 @@
 
 ## Introduction
 
-The <think> tag is a powerful feature that can be used in system prompts to guide reasoning models in structured thinking, step-by-step problem-solving, and better contextual understanding. By strategically placing this tag, prompt engineers can enhance the quality and relevance of AI-generated responses. This document explores the various techniques for using the <think> tag, when to use them, and provides practical examples.
+The &lt;think&gt; tag is a powerful feature that can be used in system prompts to guide reasoning models in structured thinking, step-by-step problem-solving, and better contextual understanding. By strategically placing this tag, prompt engineers can enhance the quality and relevance of AI-generated responses. This document explores the various techniques for using the &lt;think&gt; tag, when to use them, and provides practical examples.
 
-## Understanding the Tag
+## The Think Tag
 
-The <think> tag is primarily used to encourage the model to break down its reasoning process in a structured manner before responding to a user query. It serves as an internal guidance mechanism, ensuring that the model follows logical steps before providing an answer.
+The &lt;think&gt; tag is primarily used to encourage the model to break down its reasoning process in a structured manner before responding to a user query. It serves as an internal guidance mechanism, ensuring that the model follows logical steps before providing an answer.
 
 Key Benefits:
 
@@ -28,9 +28,7 @@ Encouraging the model to reason through a problem in steps leads to more precise
 
 Example Usage:
 
-```
-<think>Break down the problem into smaller steps and solve each one sequentially before arriving at the final answer.</think>
-```
+> &lt;think&gt;Break down the problem into smaller steps and solve each one sequentially before arriving at the final answer.&lt;/think&gt;
 
 2. Hypothetical and Counterfactual Thinking
 
@@ -42,43 +40,43 @@ This technique is useful for:
 
 Example Usage:
 
-> <think>Consider an alternative scenario where variable X changes. How would the outcome differ? Analyze both cases.</think>
+> &lt;think&gt;Consider an alternative scenario where variable X changes. How would the outcome differ? Analyze both cases.&lt;/think&gt;
 
 3. Self-Reflection and Verification
 
 Before finalizing an answer, prompting the model to verify its reasoning reduces errors and improves reliability.
 
-> <think>Before providing the final answer, check if all assumptions are valid and if there are any logical inconsistencies.</think>
+> &lt;think&gt;Before providing the final answer, check if all assumptions are valid and if there are any logical inconsistencies.&lt;/think&gt;
 
 4. Weighing Pros and Cons
 
 For decision-making tasks, asking the model to evaluate advantages and disadvantages enhances balanced outputs.
 
-> <think>List the pros and cons of both options before making a recommendation.</think>
+> &lt;think&gt;List the pros and cons of both options before making a recommendation.&lt;/think&gt;
 
 5. Decomposing Complex Queries
 
 When dealing with intricate questions, breaking them into smaller components can make the response clearer.
 
-> <think>Identify the key components of the question and address each separately before synthesizing a final response.</think>
+> &lt;think&gt;Identify the key components of the question and address each separately before synthesizing a final response.&lt;/think&gt;
 
 6. Logical Deduction and Inference
 
 Encouraging the model to infer conclusions based on given data improves analytical responses.
 
-> <think>Infer the most probable outcome based on the evidence provided.</think>
+> &lt;think&gt;Infer the most probable outcome based on the evidence provided.&lt;/think&gt;
 
 7. Fact-Checking and Consistency Verification
 
 To avoid hallucinations, instructing the model to fact-check improves response credibility.
 
-> <think>Verify all factual claims before answering. Ensure consistency with known information.</think>
+> &lt;think&gt;Verify all factual claims before answering. Ensure consistency with known information.&lt;/think&gt;
 
 8. Creative and Generative Thinking
 
 For brainstorming tasks, stimulating creativity can lead to richer ideas.
 
-> <think>Generate at least three unique solutions to this problem, considering different perspectives.</think>
+> &lt;think&gt;Generate at least three unique solutions to this problem, considering different perspectives.&lt;/think&gt;
 
 ## When to Use Each Technique
 
@@ -101,7 +99,7 @@ For brainstorming tasks, stimulating creativity can lead to richer ideas.
 
 **User Prompt:** "Why is my Python function returning None instead of the expected value?"
 
-**System Prompt:** <think>Analyze the function structure, check return statements, and identify possible issues before providing an answer.</think>
+**System Prompt:** &lt;think&gt;Analyze the function structure, check return statements, and identify possible issues before providing an answer.&lt;/think&gt;
 
 Model Output:
 
@@ -111,7 +109,7 @@ Model Output:
 
 **User Prompt:** "Should self-driving cars prioritize passenger safety over pedestrian safety?"
 
-**System Prompt:** <think>Weigh the ethical implications by listing arguments for both sides before forming a balanced perspective.</think>
+**System Prompt:** &lt;think&gt;Weigh the ethical implications by listing arguments for both sides before forming a balanced perspective.&lt;/think&gt;
 
 Model Output:
 
@@ -121,7 +119,7 @@ Model Output:
 
 **User Prompt:** "What would have happened if the Apollo 13 mission had failed?"
 
-**System Prompt:** <think>Consider the political, scientific, and technological consequences of an Apollo 13 failure before presenting a detailed answer.</think>
+**System Prompt:** &lt;think&gt;Consider the political, scientific, and technological consequences of an Apollo 13 failure before presenting a detailed answer.&lt;/think&gt;
 
 Model Output:
 
@@ -131,7 +129,7 @@ Model Output:
 
 **User Prompt:** "How can a small business compete with large corporations?"
 
-**System Prompt:** <think>List potential strategies, including niche marketing, personalized customer service, and innovation. Compare advantages and disadvantages before concluding.</think>
+**System Prompt:** &lt;think&gt;List potential strategies, including niche marketing, personalized customer service, and innovation. Compare advantages and disadvantages before concluding.&lt;/think&gt;
 
 Model Output:
 
@@ -139,4 +137,4 @@ Model Output:
 
 ## Conclusion
 
-The `<think>` tag is a versatile tool that enhances structured reasoning, fact-checking, and creative problem-solving in AI models. By strategically incorporating it into system prompts, users can refine model outputs for various use cases, ensuring more reliable and insightful responses. Whether for technical debugging, ethical reasoning, or strategic planning, leveraging <think> effectively leads to better AI interactions.
+The `&lt;think&gt;` tag is a versatile tool that enhances structured reasoning, fact-checking, and creative problem-solving in AI models. By strategically incorporating it into system prompts, users can refine model outputs for various use cases, ensuring more reliable and insightful responses. Whether for technical debugging, ethical reasoning, or strategic planning, leveraging &lt;think&gt; effectively leads to better AI interactions.
