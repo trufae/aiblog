@@ -3,6 +3,7 @@
 ## AI/LLM
 
 * [The think tag](think-tag.html)
+* [Prompt Engineering Techniques](prompt-engineering.html)
 
 ## Malware
 
