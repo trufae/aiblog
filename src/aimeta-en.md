@@ -8,6 +8,8 @@ This all started with a curiosity and a bit of frustration: why does Meta.ai, th
 ![](img/aimeta-first.jpg)
 </center>
 
+Some news sites like [VilaWeb](https://www.vilaweb.cat/noticies/denuncien-meta-ai-esborra-missatges-envia-catala-encara-enten/) or [3cat](https://www.3cat.cat/3cat/meta-ai-respon-en-catala-pero-despres-sautocorregeix-llengua-de-signes/video/6351096/) had reported on this issue.
+
 Everything suggests that there is a mechanism that blocks certain languages—such as Catalan, Galician, or Basque—that activates when it detects the final text is written in those languages. This opened the door for me to investigate how this whole process worked and if there was a way to bypass these restrictions.
 
 Hold on, because the story goes beyond what it seems.

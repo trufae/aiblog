@@ -8,6 +8,8 @@ Tot això comença amb una curiositat i una mica de frustració: per què Meta.a
 ![](img/aimeta-first.jpg)
 </center>
 
+Alguns diaris com [VilaWeb](https://www.vilaweb.cat/noticies/denuncien-meta-ai-esborra-missatges-envia-catala-encara-enten/) o [3cat](https://www.3cat.cat/3cat/meta-ai-respon-en-catala-pero-despres-sautocorregeix-llengua-de-signes/video/6351096/) s'havien fet resó sobre aquest problema.
+
 Tot fa pensar que hi ha un mecanisme que bloqueja alguns idiomes —com el català, el gallec o l’euskera— i que s’activa quan detecta que el text final està escrit en aquests llenguatges. Això em va obrir la porta a investigar com funcionava tot aquest procés i si hi havia manera de saltar aquestes restriccions.
 
 Espereu-vos, perquè la història va més enllà del que sembla.
