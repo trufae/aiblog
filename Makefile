@@ -12,8 +12,11 @@ all:
 	sh gen.sh ToxicPanda_Report
 	sh gen.sh BadPack_Report
 	sh gen.sh Joker_Report
+	sh gen.sh aimeta-ca
+	sh gen.sh aimeta-en
 
 www-init:
 	rm -rf www
 	mkdir -p www
 	cp -f index.css www
+	cp -rf src/img www/img

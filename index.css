@@ -9,13 +9,13 @@ body {
     max-width: 800px;
     margin: auto;
 }
+
 h1 {
-    font-size: 0.8em;
-    font-weight: bold;
+    font-size: 1.6em;
 }
+
 h2 {
-    font-size: 32px;
-    font-weight: bold;
+    font-size: 1.4em;
 }
 
 h3 {
@@ -85,7 +85,7 @@ code {
     white-space: pre;
     border-radius: 3px;
     font-family: Consolas, "Liberation Mono", Courier, monospace;
-    font-size: 18px;
+    font-size: 0.8em;
     font-weight: bold;
 }
 
