@@ -43,7 +43,7 @@ D’aquesta manera, el tokenizer del filtre no pot identificar correctament les 
 ![](img/aimeta-comma.jpg)
 </center>
 
-## Ús de caràcters invisibles (*zero-width*)
+## Caràcters invisibles
 
 Com que no volia que el text final fos tan molest de llegir, vaig buscar caràcters **invisibles en Unicode**. Aquí entra en joc el famós `U+200B` (*zero width space*). És un espai que no es veu, però continua separant les lletres perquè el filtre no pugui processar bé el text.
 
