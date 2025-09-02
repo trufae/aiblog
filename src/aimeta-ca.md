@@ -1,5 +1,7 @@
 # Introducció
 
+[English Version](aimeta-en.html)
+
 Tot això comença amb una curiositat i una mica de frustració: per què Meta.ai, la intel·ligència artificial de WhatsApp, sembla que **no vulgui parlar en català**? Quan escrius en català, respon perfectament, però just al final, quan ja té la resposta sencera, el missatge es filtra i acaba dient que no pot parlar en aquest idioma.
 
 <center>

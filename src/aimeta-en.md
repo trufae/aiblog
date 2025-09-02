@@ -1,5 +1,7 @@
 # Introduction
 
+[Catalan Version](aimeta-ca.html)
+
 This all started with a curiosity and a bit of frustration: why does Meta.ai, the artificial intelligence behind WhatsApp, seem like it **doesn't want to speak Catalan**? When you write in Catalan, it responds perfectly, but just at the end, when the response is complete, the message gets filtered and ends up saying it can't speak in this language.
 
 <center>
