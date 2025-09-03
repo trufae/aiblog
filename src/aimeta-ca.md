@@ -137,6 +137,7 @@ També implica riscos: qualsevol pot utilitzar això per injectar contingut ines
 L’experiment demostra que:
 
 - Meta.ai **entén perfectament el català**, però aplica filtres al final de la resposta.
+- El suport per a idiomes com el català, gallec i euskera no està polit, així que prefereixen bloquejar-lo abans d'anunciar que està disponible.
 - Es poden utilitzar tècniques de *prompt engineering* per **despistar el filtre** (caràcters invisibles, separadors, etc.).
 - Amb instruccions persistents es pot aconseguir una **conversa 100% en català**.
 - Les **comandes amb barra** són importants per fer proves, desafortunadament moltes estan encara en desenvolupament.

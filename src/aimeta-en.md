@@ -137,6 +137,7 @@ It also implies risks: anyone could use this to inject unexpected content into t
 The experiment shows that:
 
 - Meta.ai **perfectly understands Catalan**, but applies filters at the end of the response.
+- The support for languages such as Catalan, Galician, and Basque is not polished, so they prefer to block it before announcing that it is available.
 - Techniques of prompt engineering can be used to **bypass the filter** (invisible characters, separators, etc.).
 - With persistent instructions, a **100% Catalan conversation** can be achieved.
 - The **slash commands** are important for testing; unfortunately, many are still in development.
