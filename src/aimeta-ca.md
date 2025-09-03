@@ -1,4 +1,4 @@
-# Introducció
+# Desbloquejant els Filtres d'idioma a la IA de WhatsApp
 
 [English Version](aimeta-en.html)
 
@@ -144,7 +144,7 @@ L’experiment demostra que:
 - La possibilitat de **carregar instruccions via URL** és inesperada i molt interessant.
 - Amb aquesta tècnica no podem parlar d'un **jailbreak** complert ja que seguirà negant-se a donar-nos informació ilegal o perillosa.
 
-Al final, això no és només un joc de forçar una IA a parlar català: és una manera de veure com funcionen els mecanismes de seguretat, com es poden esquivar i quines implicacions té quan una empresa decideix censurar idiomes sencers.
+Al final, això no és només un joc de forçar una IA a parlar català: és una manera de veure com funcionen els mecanismes de seguretat, com es poden esquivar i les implicacions que tenen les prohibicions en els models de llenguatge.
 
 Podeu seguir-me i llegir més al meu fil [@pancake@mastodont.cat](https://mastodont.cat/@pancake/115099410531586557)
 

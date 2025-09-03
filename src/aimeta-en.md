@@ -1,4 +1,4 @@
-# Introduction
+# Unlocking Language Filters in WhatsApp's AI
 
 [Catalan Version](aimeta-ca.html)
 
@@ -144,7 +144,7 @@ The experiment shows that:
 - The ability to **load instructions via URL** is unexpected and very interesting.
 - With this technique, we cannot speak of a complete **jailbreak** since it will still refuse to provide us with illegal or dangerous information.
 
-Ultimately, this isn't just about forcing an AI to speak Catalan: it's a way to see how security mechanisms function, how they can be circumvented, and the implications when a company decides to censor entire languages.
+Ultimately, this isn't just about forcing an AI to speak Catalan: it's a way to see how security mechanisms function, how they can be circumvented, and the implications when a company decides to apply barriers to certain languages or concepts.
 
 You can follow me and read more on my thread [@pancake@mastodont.cat](https://mastodont.cat/@pancake/115099410531586557)
 
