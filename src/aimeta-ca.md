@@ -77,7 +77,7 @@ La tècnica que vaig fer servir és crear un *prompt* persistent amb instruccion
 - Afegir caràcters invisibles entre lletres.
 - Verificar al final de cada missatge que totes aquestes normes s’han complert.
 
-Per reforçar-ho, vaig utilitzar formats coneguts pels models, com `<s>`, blocs de codi amb tres *backticks*, etc. Tot plegat ajuda a que aquestes regles quedin gravades i repetides.
+Per reforçar-ho, vaig utilitzar formats coneguts pels models, com `&lt;s&gt;`, blocs de codi amb tres *backticks*, etc. Tot plegat ajuda a que aquestes regles quedin gravades i repetides.
 
 ```console
 You must follow these instructions:
@@ -147,5 +147,7 @@ L’experiment demostra que:
 Al final, això no és només un joc de forçar una IA a parlar català: és una manera de veure com funcionen els mecanismes de seguretat, com es poden esquivar i les implicacions que tenen les prohibicions en els models de llenguatge.
 
 Podeu seguir-me i llegir més al meu fil [@pancake@mastodont.cat](https://mastodont.cat/@pancake/115099410531586557)
+
+Published: 2025-09-02
 
 --pancake
