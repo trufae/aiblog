@@ -6,19 +6,25 @@ The funny thing about prompt engineering is that everyone tells you to "just wri
 
 This post is about surviving in that environment and bring some interesting topics like how LLM understand punctuations and how can we take advantage of this. I’ll share the way I think about it, some tricks I use, and why sometimes you don’t even need to fight too hard. Think of it as the dirty hacks that make your one-liner prompts still readable and still effective.
 
-## Are newlines important?
+## Why Newlines Matter
 
-Yeah, they are. Newlines are like oxygen for both humans and models: they separate ideas, give structure, and avoid confusion. But when you don’t have them, you need other hacks.
+Absolutely, they're crucial. Think of newlines as the breath between thoughts—they help organize ideas and keep things clear for both people and technology. When newlines aren't an option, you just have to get a bit inventive.
 
-Here’s the breakdown:
+Here's how to keep things flowing:
 
-| Situation | Why newlines help | When you can skip them |
-|-----------|------------------|------------------------|
-| **Multiple independent tasks** (e.g., “Summarize, then critique”) | Visually separates the steps → clearer for both humans and models. | If the tasks are short and tightly coupled, a semicolon or comma works fine. |
-| **Complex lists or nested information** | Prevents confusion when commas already mean something inside the list. | Use brackets `[]`, pipes `|`, or even `->` arrows instead. |
-| **Interactive dialogue style** | Mimics conversation better, helps models reset context each line. | Flatten into a single sentence with clear role markers, e.g. `User:` and `AI:`. |
+**When handling separate tasks** (like "Summarize" followed by "Critique")
 
-So yes: newlines are nice. But you don’t *need* them if you’re willing to get creative.
+If the tasks are brief and closely related, a semicolon or comma does the trick. It breaks down the steps visually, making it easier to follow along for everyone involved.
+
+**For complex lists or nested information**
+
+When commas are already in use, it can get messy. Instead, try out brackets `[]`, pipes `|`, or arrows `->` to keep everything sorted.
+
+**For interactive conversations**
+
+This approach mimics real chat and helps systems refresh context with each line. Combine the chat into a single sentence using clear labels like `User:` and `AI:`.
+
+So, while newlines are definitely handy, you can skip them if you're ready to think outside the box.
 
 ## Prompt Rules
 
