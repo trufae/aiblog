@@ -1,4 +1,4 @@
-# Mastering One-Liner Prompt Engineering
+# Mastering One-Liner Prompts
 
 ## Introduction
 

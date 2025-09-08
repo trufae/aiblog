@@ -1,4 +1,4 @@
-# The AI Blog
+# Pancake's AI Blog
 
 ## AI/LLM
 
