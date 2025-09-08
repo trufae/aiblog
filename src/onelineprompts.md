@@ -82,6 +82,20 @@ Tell me: - summary of the text - its sentiment - one critique
 {"task": "summarize", "then": "critique", "extra": "questions"}
 ```
 
+Sorting a numbered list that may work with 200MB models:
+
+`Sort this numbered list: ((3) last, (2) first, (4) jeje, (1) win)`
+
+Notice the following details: 
+
+* Lispy syntax
+* Prompt begins with a verb / action.
+* Introduce the type of data (numbered list)
+* Use colon `:` to separate action and data
+* Balanced parenthesis `(1)` ..
+* List contained between parenthesis
+* Using `,` comma to separate elements
+
 ## Attachments
 
 When you need to include the contents of a file or reference some context data inside the same prompt, using **XML** -like tags is usually a good idea, but it's not the only option. Some of you may ask if base64 encoding works, well that's kind of tricky and usually depends on some agentic helpers.
@@ -109,20 +123,6 @@ A few fallback patterns:
 - **Ellipsis** - using the `...` at the end of enumerations may help the model understand the given input is incomplete.
 
 It’s not elegant, but neither is cramming everything in one line. The point is: don’t break your flow just because the environment won’t accept `\n`.
-
-Example of sorting a numbered list that may work with 200MB models.
-
-`Sort this numbered list: ((3) last, (2) first, (4) jeje, (1) win)`
-
-Notice the following details: 
-
-* Lispy syntax
-* Prompt begins with a verb / action.
-* Introduce the type of data (numbered list)
-* Use colon `:` to separate action and data
-* Balanced parenthesis `(1)` ..
-* List contained between parenthesis
-* Using `,` comma to separate elements
 
 ## Conclusion
 
