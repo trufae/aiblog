@@ -2,6 +2,7 @@ all:
 	$(MAKE) www-init
 	sh gen.sh index
 	sh gen.sh think-tag
+	sh gen.sh onelineprompts
 	sh gen.sh prompt-engineering
 	sh gen.sh SplashScreen_Technique
 	sh gen.sh BadPack_Technique

@@ -2,9 +2,10 @@
 
 ## AI/LLM
 
+* Bypassing Meta AI guardrails [CAT](aimeta-ca.html) [EN](aimeta-en.html)
+* [One Line Prompts](onelineprompts.html)
 * [The think tag](think-tag.html)
 * [Prompt Engineering Techniques](prompt-engineering.html)
-* Bypassing Meta AI guardrails [CAT](aimeta-ca.html) [EN](aimeta-en.html)
 
 ## Malware
 
