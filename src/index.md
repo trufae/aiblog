@@ -1,5 +1,9 @@
 # Pancake's AI Blog
 
+## Reversing
+
+* [Fixing a radare2 bug on the Windows Terminal](./WinCdbNull.md)
+
 ## AI/LLM
 
 * Bypassing Meta AI guardrails [CAT](aimeta-ca.html) [EN](aimeta-en.html)

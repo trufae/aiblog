@@ -7,32 +7,72 @@
 
 ## Introduction
 
-blabla: windows is pain, from the unix perspective it feels a little weird
+all know that debugging programs on Windows is kind of a pain and even more if you come from Unix. The reason is because there is no good command line tools and the cmd.exe as well as the PowerShell are pretty far from the handy usability of a POSIX shell.
+
+And also it feels weird because it's not really fully following the POSIX standards and all the random NT APIs are usually pretty bloated in the sense that there is a lot of different ways to achieve the same thing and handling all this from the shell is not the best way because it's supposed and designed to be used from graphical apps.
+
+And when you go to use graphical apps you end up depending on huge applications like Visual Studio that requires a lot of gigabytes from disk and it's pretty slow to run and not really usable from the keyboard so you end up depending on the mouse. 
+
+So in this blog post I will explain how I fixed the bug in Rodare using only the Windows CMD shell.
 
 ## Building from git
 
 preconfigure.bat
+Building Radar 2 from Git is usually the recommended way to install Rodare and also for developing. On Unix system it's pretty common and easy to just follow the sys slash install.sh or just run the configure make path. But also Rodare comes with support for Mason. So you can basically use Mason for building on Windows.
+
+To simplify all these, Radar comes with a bunch of batch scripts that are in the root directory of the project. The first one is pre-configure.bat, then you have configure.bat and make.bat. So the first one, set up the environment, because obviously Windows won't make things easier and won't put the compiler and linker in your path even if you have Visual Studio installed.
+
+And even worse, if you don't have Python or you have Python, you probably don't have access to the right version of it. So you end up like needing to check which versions of Python and Mason are installed. So basically this script will set up all the environment inside the Radar directory so it won't be messing with the rest of the system and will set up the environment to use Radar and all the compiler in the same place.
+
+And finally, when you run make.bat, it will be running Mason and Ninja to compile the source code. And when the source code is compiled, it will basically install all the binaries and libraries inside the prefix directory in the same directory. So in the current directory, you will get the prefix slash bin with all the executables, pdb, dll files inside.
+
+Then you can just go into the directory and execute rodare, like when you download it from the release page.
 
 ## Spotting the bug
 
-blabla: running aaaa and then ^C leaves the shell
+So before every release I try to test radar as much as possible and testing a program in old architectures is kind of painful. So I cannot depend on the CI for verifying that the behavior is correct for, let's say, Windows interactive visual mode or testing the debugger on iOS devices and things like that.
+
+So it takes some time to basically build by hand on every architecture, every operating system and test everything. So the first thing I tried in this build was basically running AAA on rags.exe and as long as this takes a while I just pressed ctrl c to see what was going on and all I got was basically the system prompt again.
+
+This means that radar exit instead of cancelling the analysis.
 
 ## Error Codes
 
-blabla: negative numbers are confusing
+But wait, it doesn't make sense. Control-C shouldn't be leaving the program. It should be just stopping the process because Adana is actually hooking for the Control-C event. So in order to understand what was going on, because Windows CMD won't tell you if the program has crashed or failed or it was just running exit.
+
+So in order to understand what happened, you need to run this echo error level comment. And then you get a negative number, which obviously makes no sense. But if you translate this to hexadecimal, you can translate the meaning of that error. And you will learn if this is a segmentation fault, stack overflow, or just the process was interrupted.
+
+TIL when a program exits on windows when execution fail, you can 'echo %ERRORLEVEL%' and use the following table to understand the return code:
+
+TODO: add hexnumbers for these negative ones.
+
+* -1073741819 = Segmentation Fault (SIGSEGV)
+* -1073741510 = Process Interrupted (SIGINT)
+* -1073740791 = Stack Overflow
+
+```console
+$ rax2 -1073741819 -1073741510 -1073740791
+0xc0000005
+0xc000013a
+0xc0000409
+```
+
+In this case, we got a segmentation fault
 
 ## Coredumps
 
-blabla: the crashlog and minidump
+But wait, we know that there was a segmentation full, but we don't know where. So in order to do that, we can check in the appdata-local-cri-dumps directory in your home. And this directory contains all the DMP files. DMP files are basically mini-dumps, which is the equivalent to cry-dumps on Windows.
 
 ```
 C:\Users\pancake\AppData\Local\CrashDumps>copy radare2.exe.12964.dmp C:\users\pancake\prg\radare2\prefix\bin
 ```
 
+And we can get a short summary using the web-tutl tool that with this one-liner will tell us the crash-lock about the application.
+
 ```
 C:\Users\pancake\prg\radare2\prefix\bin>wevtutil qe Application /q:"*[System[(Level=2) and (Provider[@Name='Application Error'])]]" /f:text /c:5
 
-lting package-relative application ID:
+Listing package-relative application ID:
 
 Event[2]
   Log Name: Application
@@ -60,21 +100,35 @@ Faulting package full name:
 Faulting package-relative application ID:
 ```
 
+As we can see in this crash log, we see that the RadarTool program was executed. It was failing in a DLL of the system and we basically don't have any backtrace or any specific explanation, if that's apart from the exception code, which instruction was causing the crashing event.
+
 ## Debuggging
 
-We will need the cdb program
+This brings us to the very next step, which is starting to debug. Debugging on Windows is a very painful experience for all the Unix guys. Basically because on Windows people use to debug using graphical applications like x64dbg or Visual Studio. And actually using LDB or GDB is probably not recommended because these problems are not designed to run on Windows.
+
+Even if they start work you will probably need to install a specific toolchain and it's not a native Windows thing. So with all this pain I end up like discovering CDB.
+
+Cdb is a common line debugger for Windows. It comes with a Windows debugging SDK and you can download it from this URL. 
 
 https://developer.microsoft.com/en-us/windows/downloads/windows-sdk/
 
-this is installed outside the PATH, as usual, because windows dont want you to use what you have just installed unless you type a boring batch oneliner to get the path in place.
+Obviously Windows won't make things easier, so this new SDK won't be available in your path, so you need to basically find out where the hell the installation wizard put the binaries and extend your path. Luckily, the pre-configure.bat script of Radare have already set this environment for you, so you can just run cdb and you will get the prompt of the debugger.
 
-Luckily the preconfigure.bat is not only setting the path for python, visual studio, but also for the windows debugger sdk.
+CDB reminds me to debug.com, the good old debugger for DOS. And it's very easy to use. It's very similar to Radare also because it comes with a simple shell. You just type one, two letter comments and then you get output from that.
+
+And you can basically spawn, attach, show the backtrace and keep exceptions and things like that. These are the common commands you need to use to list processes or attach/spawn for debugging:
 
 * tasklist -> like `ps`
 * debugging cdb radare2 rax2.exe -> ^C captured by cdb, not r2, cant repro
 * attach with cdb -p pid
 
 Exception events, so even if we tell cdb to ignore the ^C event, it just hook its and prints a message but the null exception doesnt triggers.. we will need to check the crashdump
+
+## Exceptions
+
+So the first thing I tried was to run the Radar using the spawn method of CDB and when pressing Ctrl+C I basically come back to the CDB shell. So this means that the signal inside Radar process was basically captured by the debugger and then if it's running in the same terminal or another one when you attach, you end up like the debugger telling you that the program received the Ctrl+C.
+
+That's not really helpful, so you need to basically use another cryptic comment, the "sxn".
 
 ```
 0:001> sxn c000013a
@@ -99,8 +153,14 @@ ntdll!NtTerminateProcess+0x14:
 00007fff`c2782174 c3              ret
 ```
 
+The sxn comment basically allows you to skip the exception handler. So when the processor receives that exception, it will be stopping the debugger. It will just show an error, like a log message, and continue executing the program. So you need to basically, after spawning or touching, run the two sxn comments with the hexadecimal number without the ox at the beginning, just to make things even more confusing.
+
+And then you end up receiving another useless behavior. The behavior you get is basically you get the log there, but the program doesn't crash. This means that the exception handler of the program was not even executed. 
+
 
 ## Minidump
+
+At this point I decided to go to the Christamp way. Luckily, CDB allows you to load DMP files using the -z command line flag.
 
 ```
 C:\Users\pancake\prg\radare2\prefix\bin>cdb -z radare2.exe.15500.dmp
@@ -172,11 +232,12 @@ cs=0000  ss=0000  ds=0000  es=0000  fs=0000  gs=0000             efl=00000000
 0:001> 
 ```
 
-blabla: oh wait all register values are zero?
+With all this output from the starting point of loading the CDB, you will expect to get some useful information, but that's not the case. Actually, you see that all the resistor values are zero and you don't have any single backtrade. You just see that there is a pointer null, the reference, and you don't even see the code.
+
 
 ## The CDB Shell
 
-the cdb shell reminds me to the good old times of debug.com, using similar 1-2 letter commands like in r2land
+But let's first understand how the ctb shell works, because otherwise you won't be able to understand why ctb is behaving that way. And how the hell can we load the resistors and get the actual code that fails? So this is the list of the most common comments that you will need.
 
 u ; unassemble
 r ; regs
@@ -257,7 +318,9 @@ Open debugger.chm for complete debugger documentation
 
 ## Cdb Plugins
 
-blabla: cdb supports plugins and this !analyze one is an example of something that you would expect to work but its not.
+Also, CDP supports plugins. There is the "! analyze" plugin that basically runs a bunch of comments and analyzes the code and the backtrace to show you a useful report that you can use to understand why the program failed. The thing is that, as you will expect, this analyze script is basically useless.
+
+It shows nothing more than just null the refs and a lot of repetitive messages saying nothing else. So I will need to dig a little bit more.
 
 ```
 0:003> !analyze -v
@@ -279,6 +342,10 @@ WARNING: 00000000`7ffde000 does not appear to be a TEB
 ```
 
 ## DotExcrement
+
+As Windows and all the debugging environment is pure shit, Ctb comes with an excrement command. The excrement command basically loads the last exception into the running session, and this command basically allows you to see useful data. And thanks to that you get the register values, the address of the program content, and you can basically analyze and disassemble.
+
+Well, actually unassembled because they used the U command to disassemble because D was taken for Xdamps. And we end up finding out that this mobrcx instruction is the offending one that is causing the crash, and everything is failing inside the aircons library.
 
 ```
 0:003> .excr
