@@ -7,17 +7,16 @@
 
 ## Introduction
 
-all know that debugging programs on Windows is kind of a pain and even more if you come from Unix. The reason is because there is no good command line tools and the cmd.exe as well as the PowerShell are pretty far from the handy usability of a POSIX shell.
+We all know that debugging programs on Windows is kind of a pain and even more if you come from Unix. The main reason is because there is no good command line tools and the cmd.exe as well as the PowerShell are pretty far from the handy usability of a POSIX shell.
 
-And also it feels weird because it's not really fully following the POSIX standards and all the random NT APIs are usually pretty bloated in the sense that there is a lot of different ways to achieve the same thing and handling all this from the shell is not the best way because it's supposed and designed to be used from graphical apps.
+It feels weird because it's not really fully following the POSIX standards and all the random NT APIs are usually pretty alien and bloated in the sense that there is a lot of different ways to achieve the same thing and handling all this from the shell is not the best way because it's designed to be used from graphical apps.
 
 And when you go to use graphical apps you end up depending on huge applications like Visual Studio that requires a lot of gigabytes from disk and it's pretty slow to run and not really usable from the keyboard so you end up depending on the mouse. 
 
-So in this blog post I will explain how I fixed the bug in Rodare using only the Windows CMD shell.
+In this blog post I will explain how I fixed the bug in Rodare using only the Windows CMD shell.
 
 ## Building from git
 
-preconfigure.bat
 Building Radar 2 from Git is usually the recommended way to install Rodare and also for developing. On Unix system it's pretty common and easy to just follow the sys slash install.sh or just run the configure make path. But also Rodare comes with support for Mason. So you can basically use Mason for building on Windows.
 
 To simplify all these, Radar comes with a bunch of batch scripts that are in the root directory of the project. The first one is pre-configure.bat, then you have configure.bat and make.bat. So the first one, set up the environment, because obviously Windows won't make things easier and won't put the compiler and linker in your path even if you have Visual Studio installed.
