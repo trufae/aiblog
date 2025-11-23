@@ -1,6 +1,7 @@
 all:
 	$(MAKE) www-init
 	sh gen.sh index
+	sh gen.sh WinCdbNull
 	sh gen.sh think-tag
 	sh gen.sh onelineprompts
 	sh gen.sh prompt-engineering
