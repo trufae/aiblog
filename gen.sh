@@ -1,5 +1,6 @@
 #!/bin/sh
 A=$1
+echo $A
 mkdir -p www
 cat head.html > www/"$A".html
 # debian

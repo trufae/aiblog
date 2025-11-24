@@ -5,6 +5,10 @@
 
 ---
 
+```
+$ cat WinCdbNull-en.md| mai -p gemini -m gemini-2.5-pro 'translate to catalan, maintaining the original markdown format ' > WinCdbNull-ca.md
+```
+
 ## Introducció
 
 És ben sabut que depurar programes a Windows és un patiment i encara més si vens d'Unix. La raó principal és que no hi ha bones eines de línia d'ordres i tant el cmd.exe com el PowerShell estan bastant lluny de la usabilitat d'una consola POSIX.
