@@ -2,7 +2,7 @@
 
 ## Reversing
 
-* [Fixing a radare2 bug on the Windows Terminal](./WinCdbNull.html)
+* Fixing a radare2 bug on the Windows Terminal [CAT](./WinCdbNull-ca.html) [EN](./WinCdbNull-en.html)
 
 ## AI/LLM
 
