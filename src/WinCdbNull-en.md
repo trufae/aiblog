@@ -9,7 +9,7 @@
 
 It's widely known that debugging programs on Windows is a pain—and even more so if you come from Unix. The main reason is because there is no good command line tooling and the cmd.exe as well as the PowerShell are pretty far from the usability of a POSIX shell.
 
-It also feels weird with all those random NT APIs that usually look alien to a Unix person and they are bloated with tons of ways to achieve the same thing and it's designed to be primarily designed to use it from graphical apps.
+It also feels weird with all those random NT APIs that usually look alien to a Unix person and they are bloated with tons of ways to achieve the same thing and it's designed to be primarily used from graphical apps.
 
 Luckily, Microsoft has improved support for command-line and Unix integration since 2020. They added C99 support for the compiler (about time!), shipped WSL by default, empowered PowerShell to make malware authors more imaginative than with the poor cmd.exe batch scripting, and also added more command-line utilities to administer Windows systems through SSH.
 

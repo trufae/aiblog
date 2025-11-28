@@ -5,31 +5,27 @@
 
 ---
 
-```
-$ cat WinCdbNull-en.md| mai -p gemini -m gemini-2.5-pro 'translate to catalan, maintaining the original markdown format ' > WinCdbNull-ca.md
-```
-
 ## Introducció
 
-És ben sabut que depurar programes a Windows és un patiment, i encara més si vens d'Unix. La raó principal és que no hi ha bones eines de línia d'ordres, i tant el cmd.exe com el PowerShell estan bastant lluny de la usabilitat d'una consola POSIX.
+Per mi, sempre m'ha semblat dolorós depurar programes en Windows, principalment perquè vinc acostumat de treballar en entorns UNIX. La queixa principal que tinc és que no hi ha bones terminals ni eines per la shell, malgrat powershell sigui una millora substancial en quant a consistència, no deixa d'estar bastant lluny de la usabilitat d'una terminal POSIX.
 
-També se sent estrany amb totes aquelles APIs NT aleatòries que solen semblar alienes a una persona d'Unix i estan inflades amb tones de maneres d'aconseguir el mateix. A més, està dissenyat principalment per ser usat des d'aplicacions gràfiques.
+Amb totes les APIs NT amb noms confusos no ajuden a millorar l'experiència, a més està dissenyat per fer-lo anar de forma gràfica i no porto gaire bé això d'anar treient una ma del teclat cada dos per tres per moure el ratolí.
 
-Per sort, Microsoft ha millorat el suport per a la línia d'ordres i la integració amb Unix des del 2020. Van afegir suport C99 per al compilador (ja era hora!), van distribuir WSL per defecte, van fer que PowerShell empoderi els autors de malware per ser més imaginatius que amb els pobres scripts batch de cmd.exe, i també van afegir més utilitats de línia d'ordres per administrar sistemes Windows a través de SSH.
+Per sort, Microsoft ha millorat el suport per a la línia d'ordres i la integració amb Unix. Ben entrat a 2020, van afegir suport C99 (estandard de C de 1999), han afegit WSL per defecte, han facilitat l'us de malware gràcies a l'scripting amb PowerShell i també han afegit moltes utilitats de línia d'ordres per administrar sistemes Windows a través de SSH.
 
-Els usuaris de Windows estan acostumats a dependre d'aplicacions gràfiques inflades que ocupen desenes de GB, com Visual Studio, només per obtenir un backtrace. I si això no fos prou dolorós, t'obliguen a fer servir el ratolí.
+Malgrat tot això, els usuaris de Windows estan acostumats a dependre d'aplicacions gràfiques que ocupen desenes de GB en disc i memòria, i triguen en arrencar, si, estic pensant en tu Visual Studio.. per accions com obtenir un backtrace.
 
-En aquesta entrada de blog explicaré com vaig arreglar l'error en Radare utilitzant només la consola CMD de Windows.
+Així doncs, m'agradaria compartir la meva experiència de tot plegat en aquest article on explicaré com vaig arreglar un error a Radare utilitzant només la consola CMD de Windows.
 
 ## Compilant des de git
 
-Compilar Radare2 des de Git és la forma recomanada d'instal·lar-lo, principalment per desenvolupar i provar. En sistemes Unix, aquest és un flux de treball comú, i és tan fàcil com executar ./sys/install.sh (que executa ./configure+make+make symstall), però també hi ha suport per a meson+ninja, que és el que s'utilitza a Windows.
+Sempre recomano compilar Radare2 des de Git, no només per desenvolupar sino també per provar els ultims canvis. En sistemes Unix, aquest és comú compilar-ho tot, i en radare2 és tan senzill com `./sys/install.sh` (que executa `./configure+make+make symstall`), però també hi ha suport per a meson+ninja, que és el que s'utilitza a Windows.
 
-Per simplificar tot això, Radare ve amb un grapat de scripts batch que es troben al directori arrel del projecte. El primer és pre-configure.bat, després tens configure.bat i make.bat. Així que el primer configura l'entorn, perquè òbviament Windows no posarà les coses fàcils i no posarà el compilador i l'enllaçador al teu PATH encara que tinguis Visual Studio instal·lat.
+Per simplificar tot això, Radare vé amb un grapat d'scripts batch pel cmd de Windows que es troben al directori arrel del projecte. El primer és `preconfigure.bat`, `configure.bat` i `make.bat`. Executal's en ordre per configurar l'entorn, el project i compilar-lo.
 
-Aquest script configura tot l'entorn de compilació a Windows, troba la versió correcta de Python, crea un entorn virtual per instal·lar meson i ninja, troba Visual Studio i el Windows Debugger SDK i ho posa tot al PATH perquè ho puguis utilitzar.
+El primer script configura tot l'entorn de compilació a Windows, busca la versió de Python, crea un entorn virtual per instal·lar meson i ninja, troba Visual Studio i el Windows Debugger SDK i ho posa tot al PATH perquè ho puguis utilitzar.
 
-També vaig instal·lar `vim`, però si et conformes amb `edit.com` no et jutjaré.
+Jo sempre instal·lo `vim`, però si et conformes amb `edit.com` no et jutjaré.
 
 Quan executes `make.bat`, s'executarà Meson i Ninja per compilar el projecte, col·locant els binaris finals, els fitxers pdb (la versió de Windows de dwarf), les llibreries i els fitxers complementaris al directori `.\prefix`.
 
