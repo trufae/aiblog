@@ -11,21 +11,21 @@ $ cat WinCdbNull-en.md| mai -p gemini -m gemini-2.5-pro 'translate to catalan, m
 
 ## Introducció
 
-És ben sabut que depurar programes a Windows és un patiment i encara més si vens d'Unix. La raó principal és que no hi ha bones eines de línia d'ordres i tant el cmd.exe com el PowerShell estan bastant lluny de la usabilitat d'una consola POSIX.
+És ben sabut que depurar programes a Windows és un patiment, i encara més si vens d'Unix. La raó principal és que no hi ha bones eines de línia d'ordres, i tant el cmd.exe com el PowerShell estan bastant lluny de la usabilitat d'una consola POSIX.
 
-També se sent estrany amb totes aquelles APIs NT aleatòries que solen semblar alienes a una persona d'Unix i estan inflades amb tones de maneres d'aconseguir el mateix, i està dissenyat principalment per ser usat des d'aplicacions gràfiques.
+També se sent estrany amb totes aquelles APIs NT aleatòries que solen semblar alienes a una persona d'Unix i estan inflades amb tones de maneres d'aconseguir el mateix. A més, està dissenyat principalment per ser usat des d'aplicacions gràfiques.
 
-Per sort, Microsoft ha millorat el suport per a la línia d'ordres i la integració amb Unix des del 2020, van afegir suport C99 per al compilador (ja era hora!), distribuint WSL per defecte, tenint PowerShell que apodera els autors de malware a ser més imaginatius que amb els pobres scripts batch de cmd.exe i també afegint més utilitats de línia d'ordres per administrar sistemes Windows a través de SSH.
+Per sort, Microsoft ha millorat el suport per a la línia d'ordres i la integració amb Unix des del 2020. Van afegir suport C99 per al compilador (ja era hora!), van distribuir WSL per defecte, van fer que PowerShell empoderi els autors de malware per ser més imaginatius que amb els pobres scripts batch de cmd.exe, i també van afegir més utilitats de línia d'ordres per administrar sistemes Windows a través de SSH.
 
-Els usuaris de Windows estan acostumats a dependre d'aplicacions gràfiques inflades que ocupen desenes de GB com Visual Studio només per obtenir un backtrace, i si això no fos prou dolorós, t'obliguen a fer servir el ratolí.
+Els usuaris de Windows estan acostumats a dependre d'aplicacions gràfiques inflades que ocupen desenes de GB, com Visual Studio, només per obtenir un backtrace. I si això no fos prou dolorós, t'obliguen a fer servir el ratolí.
 
-En aquesta entrada de blog explicaré com vaig arreglar l'error a Radare utilitzant només la consola CMD de Windows.
+En aquesta entrada de blog explicaré com vaig arreglar l'error en Radare utilitzant només la consola CMD de Windows.
 
 ## Compilant des de git
 
 Compilar Radare2 des de Git és la forma recomanada d'instal·lar-lo, principalment per desenvolupar i provar. En sistemes Unix, aquest és un flux de treball comú, i és tan fàcil com executar ./sys/install.sh (que executa ./configure+make+make symstall), però també hi ha suport per a meson+ninja, que és el que s'utilitza a Windows.
 
-Per simplificar tot això, Radare ve amb un grapat de scripts batch que es troben al directori arrel del projecte. El primer és pre-configure.bat, després tens configure.bat i make.bat. Així que el primer, configura l'entorn, perquè òbviament Windows no posarà les coses fàcils i no posarà el compilador i l'enllaçador al teu path encara que tinguis Visual Studio instal·lat.
+Per simplificar tot això, Radare ve amb un grapat de scripts batch que es troben al directori arrel del projecte. El primer és pre-configure.bat, després tens configure.bat i make.bat. Així que el primer configura l'entorn, perquè òbviament Windows no posarà les coses fàcils i no posarà el compilador i l'enllaçador al teu PATH encara que tinguis Visual Studio instal·lat.
 
 Aquest script configura tot l'entorn de compilació a Windows, troba la versió correcta de Python, crea un entorn virtual per instal·lar meson i ninja, troba Visual Studio i el Windows Debugger SDK i ho posa tot al PATH perquè ho puguis utilitzar.
 
@@ -33,7 +33,7 @@ També vaig instal·lar `vim`, però si et conformes amb `edit.com` no et jutjar
 
 Quan executes `make.bat`, s'executarà Meson i Ninja per compilar el projecte, col·locant els binaris finals, els fitxers pdb (la versió de Windows de dwarf), les llibreries i els fitxers complementaris al directori `.\prefix`.
 
-Només has de fer `CD .\prefix\bin` i ja estàs a punt per executar `radare2.exe rax2.exe` per provar-ho!
+Només has de fer `cd .\prefix\bin` i ja estàs a punt per executar `radare2.exe` i `rax2.exe` per provar-ho!
 
 ## Detectant l'error
 
@@ -41,7 +41,7 @@ Just abans de cada llançament, intento provar radare tant com puc i en totes le
 
 Les ordres de prova d'integració contínua, comportaments unitaris de l'API, assembladors, desassembladors, anàlisi de binaris i sistemes de fitxers "fuzzed", però res d'això pot cobrir el que l'usuari final experimentaria en executar-lo, entrar en mode visual, utilitzar el depurador, etc.
 
-Porta una estona compilar a mà a cada arquitectura, cada sistema operatiu i provar-ho tot. El primer que vaig provar en aquesta compilació va ser realitzar una anàlisi completa del binari `rax2.exe` amb l'ordre `aaaa`. Com que això va trigar molt, vaig prémer ctrl-c i inesperadament vaig tornar a la línia d'ordres del sistema.
+Porta una estona compilar a mà a cada arquitectura, cada sistema operatiu i provar-ho tot. El primer que vaig provar en aquesta compilació va ser realitzar una anàlisi completa del binari `rax2.exe` amb l'ordre `aaaa`. Com que això va trigar molt, vaig prémer Ctrl+C i inesperadament vaig tornar a la línia d'ordres del sistema.
 
 Això significa que radare va sortir en lloc de cancel·lar l'anàlisi.
 
@@ -51,7 +51,7 @@ Espera, això no té cap sentit. Control-C no hauria de fer sortir del programa!
 
 Per saber què va passar, necessitem fer `echo %ERRORLEVEL%`, per descobrir el codi de retorn del programa. Sí, el número que la funció main retorna al sistema també s'utilitza per informar sobre excepcions de fallada.
 
-Hauria de limitar-se a aturar el procés perquè Radare en realitat està capturant l'esdeveniment de Control-C. Així que per entendre què passava, perquè el CMD de Windows no et dirà si el programa ha fallat, ha petat o simplement ha executat un exit. (nota al marge: això es va solucionar a PowerShell, només ens estem divertint amb cmd.exe, recordeu?)
+Hauria de limitar-se a aturar el procés perquè Radare en realitat està capturant l'esdeveniment de Control-C. Així que per entendre què passava, perquè el CMD de Windows no et dirà si el programa ha fallat, ha petat o simplement ha executat un exit. (Nota al marge: això es va solucionar a PowerShell, només ens estem divertint amb cmd.exe, recordeu?)
 
 ```console
 C:\radare2\prefix\bin> radare2.exe rax2.exe
@@ -117,7 +117,7 @@ Faulting package full name:
 Faulting package-relative application ID:
 ```
 
-En aquest registre de fallada, veiem que es va executar el programa Radare.exe. Estava fallant a ucrtbased.dll, que és la libc de Windows, però no en sabem res més, ni backtrace, ni noms de símbols, res.
+En aquest registre de fallada, veiem que es va executar el programa radare2.exe. Estava fallant a ucrtbased.dll, que és la libc de Windows, però no en sabem res més, ni backtrace, ni noms de símbols, res.
 
 ## Depurant
 
@@ -136,7 +136,7 @@ Per sort per a mi, vaig descobrir `CDB`, el depurador de consola del Windows Deb
 Aquestes són les ordres comunes que necessites utilitzar per llistar processos o adjuntar/llançar per depurar:
 
 * tasklist -> com `ps`
-* depurant cdb radare2 rax2.exe -> ^C capturat per cdb, no per r2, no es pot reproduir
+* depurar cdb radare2 rax2.exe -> ^C capturat per cdb, no per r2, no es pot reproduir
 * adjuntar amb cdb -p pid
 
 ## Excepcions
@@ -174,7 +174,7 @@ L'ordre sxn bàsicament et permet saltar el gestor d'excepcions, el procés no e
 
 ## Minidump
 
-Anem a provar l'enfocament d'anàlisi post-mortem. Utilitzant l'indicador `-z` de `cdb` podria carregar el fitxer `.dmp`:
+Anem a provar l'enfocament d'anàlisi post-mortem. Utilitzant l'indicador `-z` de `cdb` puc carregar el fitxer `.dmp`:
 
 ```
 C:\Users\pancake\prg\radare2\prefix\bin>cdb -z radare2.exe.15500.dmp
@@ -265,7 +265,7 @@ Teclejant l'ordre `?` ens donarà una llista més completa:
 ```console
 0:001> ?
 
-Obriu debugger.chm per a la documentació completa del depurador
+Obre debugger.chm per a la documentació completa del depurador
 
 B[C|D|E][<bps>] - esborrar/desactivar/activar punt(s) de ruptura
 BL - llistar punts de ruptura
@@ -532,7 +532,7 @@ Resulta que el gestor `CTRL_C_EVENT` de Windows s'executa des d'un fil d'execuci
 
 ## Paraules finals
 
-Idealment, voldríem tenir múltiples instàncies de RCons per utilitzar un únic terminal; no es tracta només que puguis tenir un únic nucli associat a una instància de rcons per executar des de diferents fils. Sinó que també pots tenir múltiples fils amb les seves pròpies instàncies de RCore separades, cadascuna amb el seu propi RCons.
+Idealment, voldríem tenir múltiples instàncies de RCons per utilitzar un únic terminal. No es tracta només que puguis tenir un únic nucli associat a una instància de RCons per executar des de diferents fils, sinó que també pots tenir múltiples fils amb les seves pròpies instàncies de RCore separades, cadascuna amb el seu propi RCons.
 
 Qui pot rebre l'esdeveniment? Totes? L'última a sol·licitar la interrupció? Les instàncies de RCons poden deixar de ser afectades per aquests esdeveniments?
 
